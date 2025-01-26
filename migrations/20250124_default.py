@@ -4,6 +4,8 @@ from ijson import items
 from os import getenv
 from decimal import Decimal
 
+from db.sessions import get_migration_session
+
 load_dotenv()
 
 URI = getenv('CLUSTER_URI')
@@ -28,8 +30,7 @@ def __type_cast_object__(obj: dict):
 
 def __migrate__():
     try:
-        db = client[DATABASE]
-        games = db["games"]
+        games = get_migration_session()
         if not games.count_documents({}):
             batch = []
             with open("data/data.json", "rb") as file:
@@ -50,8 +51,7 @@ def __migrate__():
 
 def __rollback__():
     try:
-        db = client[DATABASE]
-        games = db["games"]
+        games = get_migration_session()
         games.drop()
         print("Collection dropped")        
     except Exception as e:
