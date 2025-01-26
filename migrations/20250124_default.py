@@ -32,7 +32,7 @@ def __migrate__():
         games = db["games"]
         if not games.count_documents({}):
             batch = []
-            with open("migrations/data.json", "rb") as file:
+            with open("data/data.json", "rb") as file:
                 for record in items(file, "item"):
                     record = __type_cast_object__(record)
                     if len(batch) == BATCH_SIZE:
