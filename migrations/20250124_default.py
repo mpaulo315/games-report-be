@@ -1,20 +1,9 @@
-from pymongo import MongoClient
-from dotenv import load_dotenv
 from ijson import items
-from os import getenv
 from decimal import Decimal
 
 from db.sessions import get_migration_session
 
-load_dotenv()
-
-URI = getenv('CLUSTER_URI')
-DATABASE = getenv('DATABASE')
-COLLECTION = "games"
-
 BATCH_SIZE = 10000
-
-client = MongoClient(URI)
 
 def __type_cast_object__(obj: dict):
     if isinstance(obj, dict):
@@ -59,10 +48,12 @@ def __rollback__():
 
 if __name__ == "__main__":
     import sys
-    if len(sys.argv) == 2:
+    if len(sys.argv) > 1:
         if sys.argv[1] == "migrate":
             __migrate__()
         elif sys.argv[1] == "rollback":
             __rollback__()
+        else:
+            print("Invalid argument. Use 'migrate' or 'rollback'")
     else:
-        print("Invalid command!")
+        print("No argument provided. Use 'migrate' or 'rollback'")
