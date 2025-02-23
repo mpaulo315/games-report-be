@@ -38,5 +38,3 @@ def get_migration_session():
     with MongoClient(URI) as client:
         client = MongoClient(URI)
         return client[DATABASE][COLLECTION]
-
-

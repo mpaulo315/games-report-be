@@ -1,21 +1,9 @@
-from os import getenv
-from dotenv import load_dotenv
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
+from fastapi import FastAPI
+from .routers import  games
 
-load_dotenv()
+app = FastAPI()
+app.include_router(games.router)
 
-URI = getenv('CLUSTER_URI')
-
-print("Connection String: ", URI)
-client = MongoClient(URI)
-
-try:
-    database = client.get_database("sample_mflix")
-    collection = database.get_collection("movies")
-
-    print(list(collection.find({"title": "The Great Train Robbery"})))
-except Exception as e:
-    print(f"Error connecting to MongoDB: {e}")
-
-
+@app.get("/")
+async def root():
+    return {"message": "Hello World Again"}
