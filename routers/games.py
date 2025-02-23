@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from repositories.games import read_games
+from repositories import games
 
 router = APIRouter(
     prefix="/games",
@@ -8,5 +8,8 @@ router = APIRouter(
 
 @router.get("/")
 async def list_games():
-    result = read_games()
-    return list(result)
+    return games.list_games()
+
+@router.get("/count")
+async def count_games():
+    return games.count_games()

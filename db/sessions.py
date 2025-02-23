@@ -15,7 +15,8 @@ def get_database_conn():
 def get_session():
     with MongoClient(URI) as client:
         client = MongoClient(URI)
-        return ReadOnlyCollection(client[DATABASE][DEFAULT_COLLECTION])
+        return client[DATABASE][DEFAULT_COLLECTION]
+        # return ReadOnlyCollection(client[DATABASE][DEFAULT_COLLECTION])
 
 def get_migration_session():
     with MongoClient(URI) as client:
