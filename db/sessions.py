@@ -3,38 +3,21 @@ from dotenv import load_dotenv
 from os import getenv
 load_dotenv()
 
+from .classes import ReadOnlyCollection
+
 URI = getenv('CLUSTER_URI')
 DATABASE = getenv('DATABASE')
-COLLECTION = "games"
+DEFAULT_COLLECTION = "games"
+    
+def get_database_conn():
+    return MongoClient(URI)[DATABASE]
 
-
-class ReadOnlyCollection:
-    def __init__(self, collection):
-        self.__collection = collection
-    
-    def find(self, *args, **kwargs):
-        return self.__collection.find(*args, **kwargs)
-
-    def find_one(self, *args, **kwargs):
-        return self.__collection.find_one(*args, **kwargs)
-    
-    def aggregate(self, *args, **kwargs):
-        return self.__collection.aggregate(*args, **kwargs)
-
-    def distinct(self, *args, **kwargs):
-        return self.__collection.distinct(*args, **kwargs)
-    
-    def count_documents(self, *args, **kwargs):
-        return self.__collection.count_documents(*args, **kwargs)
-    
-    
 def get_session():
     with MongoClient(URI) as client:
         client = MongoClient(URI)
-        client[DATABASE].command('ping')
-        return ReadOnlyCollection(client[DATABASE][COLLECTION])
+        return ReadOnlyCollection(client[DATABASE][DEFAULT_COLLECTION])
 
 def get_migration_session():
     with MongoClient(URI) as client:
         client = MongoClient(URI)
-        return client[DATABASE][COLLECTION]
+        return client[DATABASE][DEFAULT_COLLECTION]
