@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from repositories import games
+from type.games import GameChart
 
 router = APIRouter(
     prefix="/games",
@@ -7,7 +8,7 @@ router = APIRouter(
 )
 
 @router.get("/")
-async def list_games():
+async def list_games() -> list[GameChart]:
     return games.list_games()
 
 @router.get("/count")
