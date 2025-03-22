@@ -17,7 +17,7 @@ def list_games():
         "release_date": 1
     }
 
-    return get_session().find({}, projection).to_list(100)
+    return get_session().find({"release_date": {"$ne": None}, "developer": {"$ne": None}}, projection).to_list()
 
 def count_games():
     return get_session().count_documents({}, hint="_id_")
