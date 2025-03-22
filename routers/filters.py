@@ -22,3 +22,10 @@ async def list_genres():
 async def list_consoles():
     return list(get_consoles())
 
+@router.get("/release_date/range")
+async def list_date_range():
+    result = get_date_range().to_list()[0]
+    del result["_id"]
+    return result
+
+

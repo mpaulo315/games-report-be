@@ -17,8 +17,8 @@ def get_date_range():
         {
             "$group": {
                 "_id": None,
-                "min": {"$min": "$release_date"},
-                "max": {"$max": "$release_date"}
+                "start_date": {"$min": "$release_date"},
+                "end_date": {"$max": "$release_date"}
             }
         }
     ])
