@@ -1,7 +1,7 @@
 from db.sessions import get_session
+from type.games import GameChart
 
-def list_games():
-    projection = {
+default_projection = {
         "_id": 0,
         "title": 1,
         "console": 1,
@@ -10,15 +10,18 @@ def list_games():
         "developer": 1,
         "critic_score": 1,
         "total_sales": 1,
-        "na_sales": 1,
-        "jp_sales": 1,
-        "pal_sales": 1,
-        "other_sales": 1,
         "release_date": 1
-    }
+}
 
-    return get_session().find({"release_date": {"$ne": None}, "developer": {"$ne": None}}, projection).to_list()
+default_filter =  {"release_date": {"$ne": None}, "developer": {"$ne": None}}
 
-def count_games():
-    return get_session().count_documents({}, hint="_id_")
+def list_games() -> list[GameChart]:    
+    return get_session().find(default_filter, default_projection).to_list()
+
+def list_games_pg(limit: int, skip : int ) -> list[GameChart]:
+    return get_session().find(default_filter, default_projection)\
+        .skip(skip).limit(limit).to_list()
+
+def count_games() -> int:
+    return get_session().count_documents(default_filter, hint="_id_")
 

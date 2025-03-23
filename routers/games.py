@@ -11,6 +11,10 @@ router = APIRouter(
 async def list_games() -> list[GameChart]:
     return games.list_games()
 
+@router.get("/list")
+async def list_games_pg(page: int = 1, limit : int = 100) -> list[GameChart]:
+    return games.list_games_pg(limit=limit, skip=(page - 1) * limit)
+
 @router.get("/count")
-async def count_games():
+async def count_games() -> int:
     return games.count_games()
