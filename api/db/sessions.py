@@ -9,6 +9,7 @@ COLLECTION = getenv("COLLECTION")
     
 def get_session():
     QUERY_URI = getenv('QUERY_URI')
+    print(QUERY_URI)
     with MongoClient(QUERY_URI) as client:
         client = MongoClient(QUERY_URI)
         return client[DATABASE][COLLECTION]
